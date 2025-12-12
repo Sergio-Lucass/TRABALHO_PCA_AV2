@@ -146,6 +146,36 @@ def menu_pesquisar(df):
   print(aluno_selecionado.iloc[0].to_string())
   print("=================================\n")
 
+  while True:
+    print("O que deseja fazer?")
+    print("1 - EDITAR")
+    print("2 - REMOVER")
+    print("3 - VOLTAR PARA O MENU PRINCIPAL\n")
+
+    try:
+        opcao = int(input("Escolha: ").strip())
+
+    except ValueError:
+        print("Opção inválida. Por favor, digite 1, 2 ou 3.")
+        continue 
+    
+    if opcao == 1:
+      df = pesquisar_editar(df, idx)
+      return df
+
+    elif opcao == 2:
+      df_antes = df.copy()
+      df = pesquisar_remover(df, idx)
+
+      if len(df) < len(df_antes):
+        return df
+
+    elif opcao == 3:
+      return df
+
+    else:
+      print("Opção inválida, tente novamente.")
+
 def pesquisar_editar(df, idx):
   print("\n===== EDITAR ALUNO =====")
   print("Deixe vazio (pressione - ENTER) para manter o valor atual.\n")
