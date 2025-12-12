@@ -218,3 +218,43 @@ def pesquisar_remover(df, idx):
     print("\nOpção inválida. A remoção foi cancelada.\n")
 
   return df
+
+def menu_sair():
+  escolha = input("Você realmente deseja sair? (s) ou (n)?: ").strip().lower()
+
+  if escolha in ["s", "sim"]:
+    print("Você saiu do menu!")
+    return True
+    
+  else:
+    print("Voltando pro menu...\n")
+    return False 
+
+def menu_main():
+  df = carregar_dados()
+
+  while True:
+    print("===== MENU =====")
+    print("1 - INSERIR")
+    print("2 - PESQUISAR")
+    print("3 - SAIR")
+    print("================")
+
+    try:
+        opcao = int(input("Escolha uma opção: ").strip())
+    except ValueError:
+        print("Entrada inválida. Digite um número.")
+        continue
+
+    if opcao == 1:
+      df = menu_inserir(df)
+        
+    elif opcao == 2:
+      df = menu_pesquisar(df)
+        
+    elif opcao == 3:
+      if menu_sair():
+          break
+        
+    else:
+      print("Opção inválida. Tente novamente.\n")
