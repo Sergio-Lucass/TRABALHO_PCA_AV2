@@ -42,3 +42,24 @@ def salvar_dados(df):
   df.to_csv(nome_arquivo, index=False)
   print("\nDados salvos/atualizados com sucesso!")
 
+def menu_inserir(df):
+  print("\n===== INSERIR NOVO ALUNO =====")
+
+  matricula = criar_matricula(df)
+  aluno = {}
+  aluno["Matricula"] = matricula
+  aluno['Nome'] = input("Nome: ").strip()
+  aluno['Rua'] = input("Rua: ").strip()
+  aluno['Numero'] = input("Número: ").strip()
+  aluno['Bairro'] = input("Bairro: ").strip()
+  aluno['Cidade'] = input("Cidade: ").strip()
+  aluno['UF'] = input("UF (ex: RJ): ").strip().upper()
+  aluno['Telefone'] = input("Telefone: ").strip()
+  aluno['Email'] = input("E-mail: ").strip()
+
+  df = pd.concat([df, pd.DataFrame([aluno])], ignore_index=True)
+  salvar_dados(df)
+
+  print(f"Aluno cadastrado com matrícula {matricula}!\n")
+  return df
+
