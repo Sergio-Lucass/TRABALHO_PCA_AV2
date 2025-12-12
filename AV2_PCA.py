@@ -63,3 +63,86 @@ def menu_inserir(df):
   print(f"Aluno cadastrado com matrícula {matricula}!\n")
   return df
 
+def menu_pesquisar(df):
+  print("\n===== PESQUISAR ALUNO =====")
+  if df.empty:
+    print("O cadastro de alunos está vazio.\n")
+    return df
+
+  while True:
+      try:
+          print("Você deseja pesquisar pela matricula ou pelo nome do aluno?")
+          print("1 - MATRICULA")
+          print("2 - NOME")
+          print("3 - VOLTAR PRO MENU")
+          print("===========================")
+            
+          try:
+              escolha = int(input("Escolha a opcao: ").strip())
+          except ValueError:
+              print("Opção inválida. Por favor, digite 1, 2 ou 3.")
+
+          if escolha == 3:
+            print("Você retornou para o menu.\n")
+            return df
+            
+          if escolha == 1:
+            busca = input("Digite a matrícula: ").strip()
+            try:
+                busca_int = int(busca)
+                resultado = df[df["Matricula"] == busca_int]
+            except ValueError:
+                print("Matrícula inválida. Digite um número.")
+                continue
+
+          elif escolha == 2:
+            busca = input("Digite o nome: ").strip().lower()
+            resultado = resultado = df[df["Nome"].str.lower() == busca]
+            
+          else:
+            print("Opção inválida!")
+            continue
+            
+          break
+        
+      except Exception as e:
+          print(f"Ocorreu um erro na escolha da pesquisa: {e}")
+          continue
+
+  if resultado.empty:
+    print("\nNenhum aluno encontrado.\n")
+    return df
+
+  aluno_selecionado = None
+    
+  if len(resultado) > 1:
+    print("\n=== MÚLTIPLOS RESULTADOS ENCONTRADOS ===")
+    print(resultado[["Matricula", "Nome"]].to_string(index=False))
+        
+    while True:
+      try:
+          matricula_selecionada = int(input("Digite a MATRÍCULA do aluno desejado: ").strip())
+          aluno_selecionado = resultado[resultado["Matricula"] == matricula_selecionada]
+
+          if not aluno_selecionado.empty:
+            break
+
+          else:
+            print("Matrícula não encontrada nos resultados.")
+
+      except ValueError:
+          print("Matrícula deve ser um número.")
+
+  else:
+    aluno_selecionado = resultado
+
+  if aluno_selecionado.empty:
+    print("\nSeleção cancelada ou matrícula inválida.")
+    return df
+
+  idx = aluno_selecionado.index[0]
+
+  print("\n=== DADOS DO ALUNO SELECIONADO ===")
+  print(aluno_selecionado.iloc[0].to_string())
+  print("=================================\n")
+
