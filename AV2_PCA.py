@@ -146,3 +146,45 @@ def menu_pesquisar(df):
   print(aluno_selecionado.iloc[0].to_string())
   print("=================================\n")
 
+def pesquisar_editar(df, idx):
+  print("\n===== EDITAR ALUNO =====")
+  print("Deixe vazio (pressione - ENTER) para manter o valor atual.\n")
+
+  for coluna in CAMPOS_ALUNO:   
+      atual = df.loc[idx, coluna]
+      display_atual = str(atual) if pd.notna(atual) else ""
+      novo = input(f"{coluna} (Atual: {display_atual}): ").strip()
+
+      if novo != "":
+        if coluna == 'Numero' or coluna == 'Telefone':
+          try:
+              valor_final = int(novo)
+          except ValueError:
+              valor_final = novo 
+        else:
+          valor_final = novo
+                
+        df.loc[idx, coluna] = valor_final
+
+  salvar_dados(df)
+  print("\nOs dados foram atualizados!\n")
+  return df
+
+def pesquisar_remover(df, idx):
+  print("\n===== REMOVER ALUNO =====")
+  nome_aluno = df.loc[idx, "Nome"]
+    
+  confirmar = input(f"Tem certeza que deseja apagar o registro de '{nome_aluno}'? (s/n): ").lower()
+
+  if confirmar == "s":
+    df = df.drop(index=idx).reset_index(drop=True)
+    salvar_dados(df)
+    print(f"Aluno '{nome_aluno}' removido do arquivo!\n")
+
+  elif confirmar == "n":
+    print("\nRemoção cancelada.\n")
+
+  else:
+    print("\nOpção inválida. A remoção foi cancelada.\n")
+
+  return df
